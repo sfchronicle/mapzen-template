@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mapzen Example</title>
+    <link rel="stylesheet" href="map.css">
+
+    
+  </head>
+  <body>
+
+    <div class="container">
+      <div id="map">
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="tile.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+    <script src="map.js"></script>
+    <!--<script type='text/javascript'>
+      window.bugTitle = 'Map using d3 and vector PBF';
+      
+      var layers = ['water', 'landuse', 'roads', 'buildings'];
+      window.renderTiles = function(d) {
+        var svg = d3.select(this);
+        this._xhr = d3.xhr("https://vector.mapzen.com/osm/all/" + d[2] + "/" + d[0] + "/" + d[1] + ".mvt?api_key=vector-tiles-LM25tq4").responseType('arraybuffer').get(function(error, json) {
+          
+          var tile = new VectorTile( new pbf( new Uint8Array(json.response) ) );
+          var extents = 4096;
+          var data = {};
+          for (var key in tile.layers) {
+            data[key] = tile.layers[key].toGeoJSON();
+          }
+          var tile_projection = d3.geo.transform({
+            point: function(x, y) {
+              x = x/extents*256;
+              y = y/extents*256;
+              this.stream.point(x, y);
+            }
+          })
+          var tilePath = d3.geo.path()
+          .projection(tile_projection)
+          layers.forEach(function(layer){
+            var layer_data = data[layer];
+            
+            if (layer_data) {
+              svg.selectAll("path")
+                .data(layer_data.features.sort(function(a, b) { return a.properties.sort_key ? a.properties.sort_key - b.properties.sort_key : 0 }))
+              .enter().append("path")
+                .attr("class", function(d) { var kind = d.properties.kind || ''; return layer + '-layer ' + kind; })
+                .attr("d", tilePath );
+            }
+          });
+        });
+      };
+    </script>-->
+
+  </body>
+</html>

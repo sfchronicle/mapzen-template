@@ -1,0 +1,38 @@
+body {
+	margin: 0;
+}
+
+path {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.park,
+.nature_reserve,
+.wood,
+.protected-land { 
+	fill: #C7EAAA; 
+	stroke: none; 
+}
+.ocean { 
+	fill: #F2F3F4; 
+	stroke: #F2F3F4; 
+}
+.major_road {  
+
+}
+.minor_road {  
+
+}
+.highway { 
+	stroke: #CFCFCF; 
+	stroke-width: 1.5px; 
+}
+.rail {  
+
+}
+.buildings path { 
+	stroke: none;  
+}
