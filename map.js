@@ -55,21 +55,21 @@ App.Map.load = function () {
     var path = d3.geo.path()
       .projection(projection);
 
-/****** Tooltip
+/****** // Tooltip
     var tip = d3.tip()
       .attr('class', 'map-tooltip')
       .html(createTooltip);
-//  uncomment line 84 to call this function
+//  uncomment line 83 to call this function
 *************/
 
-/****** Zoom functionality
+/****** // Zoom functionality
 	var zoom = d3.behavior.zoom()
     .scale(projection.scale() * 2 * Math.PI)
     .scaleExtent([1 << 12, 1 << 25])
-    //San Francisco - 37.7524/-122.4407
+    // San Francisco - 37.7524/-122.4407
     .translate(projection([-122.4407, 37.7524]).map(function(x) { return -x; }))
     .on("zoom", zoomed);
-//  uncomment line 85 to call zoom function    
+//  uncomment line 84 to call zoom function    
 *************/ 
 
 	var svg = d3.select('#map').append('div').classed('svg-container', true)
@@ -79,12 +79,34 @@ App.Map.load = function () {
           .classed('svg-content-responsive', true)
 
     svg.call(renderTiles)
-//	  .call(renderTopojson)
 //	  .call(renderLegend);
 //	  .call(tip)
 //    .call(zoom);
 
+	// separate objects based on how they will be styled and 
+	// put different class names in the second argument of this function call.
+	// call as many times as needed
+	renderJson(svg, self.json1, 'overlay1');
+//	renderJson(svg, self.json2, 'overlay2');
 
+/****** // More Zoom Functionality
+	var zoom_controls = svg.append("div")
+	    .attr("class", "zoom-container");
+
+	var zoom_in = zoom_controls.append("a")
+	    .attr("class", "zoom")
+	    .attr("id", "zoom_in")
+	    .text("+");
+
+	var zoom_out = zoom_controls.append("a")
+	    .attr("class", "zoom")
+	    .attr("id", "zoom_out")
+	    .text("-");
+
+	zoomed();
+*************/ 
+
+	
 function renderTiles (svg) {
     /* Hit Mapzen Vector Tile API for map data */
     svg.selectAll('g')
@@ -99,7 +121,7 @@ function renderTiles (svg) {
 
             layers.forEach(function (layer) {
               var data = json[layer];
-       
+
               if (data) {
                 g.selectAll('path')
                     .data(data.features.sort(function(a, b) { return a.properties.sort_key - b.properties.sort_key; }))
@@ -111,38 +133,118 @@ function renderTiles (svg) {
           });
         });
   }
- }
+  function renderJson (svg, json, className) {
+      // render json data on map
 
-/****** Example of data added on top of svg map
+      svg.append("g")
+            .selectAll("path")
+            .data(json.features)
+            .enter().append("path")
+            .attr('class', className)
+            .attr("d", path);
+    //  .on('mouseover', tip.show)
+    //  .on('mouseout', tip.hide);
+  }
+/***
+  function zoomed() {
+	  var tiles = tiler
+	      .scale(zoom.scale())
+	      .translate(zoom.translate())
+	      ();
 
-function renderTopojson (svg) {
-    // Render topojson of SF Airbnb neighborhoods
-    // Converted from KML for John Blanchard
+	  projection
+	      .scale(zoom.scale() / 2 / Math.PI)
+	      .translate(zoom.translate());
 
-    function build (json) {
-      // render neighborhoods on map
-      svg.append('g').selectAll('path')
-        .data(topojson.feature(json, json.objects.neighborhoods).features)
-      .enter().append('path')
-        .attr('class', 'neighborhood')
-        .attr('id', function (d) { return slugify(d.properties.name); })
-        .attr('d', path)
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-    }
+	  var image = svg
+	      .style(prefix + "transform", matrix3d(tiles.scale, tiles.translate))
+	    .selectAll(".tile")
+	      .data(tiles, function(d) { return d; });
 
-    // Checking for cached JSON to keep network trips down
-    if (!App.jsonCache) {
-      // http://s3-us-west-1.amazonaws.com/sfc-airbnb/static/2015-07-02-sf-neighborhoods-airbnb.topojson
-      d3.json('http://s3-us-west-1.amazonaws.com/sfc-airbnb/static/2015-07-12-sf-neighborhoods-airbnb.topojson', function (error, json) {
-        if (error) { console.error(error); return error; }
-        App.jsonCache = json;
-        build( json );
-        self.choropleth(svg, path, App.Map.currentId); // KICK OFF
-      });
-    } else {
-      build( App.jsonCache );
-      self.choropleth(svg, path, App.Map.currentId); // KICK OFF
-    }
+	  image.exit()
+	      .each(function(d) { this._xhr.abort(); })
+	      .remove();
+
+	  image.enter().append("svg")
+	      .attr("class", "tile")
+	      .style("left", function(d) { return d[0] * 256 + "px"; })
+	      .style("top", function(d) { return d[1] * 256 + "px"; })
+	      .each(window.renderTiles);
+  }
+ *****/
 }
-*************/ 
+
+// PUT DATA IN THESE VARIABLES
+App.Map.json1 = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.43206977844237,
+              37.7916084854395
+            ],
+            [
+              -122.42013931274413,
+              37.793778925645704
+            ],
+            [
+              -122.41627693176268,
+              37.78177287927109
+            ],
+            [
+              -122.4440860748291,
+              37.776074412060694
+            ],
+            [
+              -122.43206977844237,
+              37.7916084854395
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
+
+App.Map.json2 = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.45052337646486,
+              37.77356423357254
+            ],
+            [
+              -122.43061065673827,
+              37.74940789133212
+            ],
+            [
+              -122.41104125976564,
+              37.76053707395284
+            ],
+            [
+              -122.42340087890624,
+              37.7754638359482
+            ],
+            [
+              -122.45052337646486,
+              37.77356423357254
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
