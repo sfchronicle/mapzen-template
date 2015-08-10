@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+<html class="no-js" lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mapmaker</title>
+    <link rel="stylesheet" href="map.css">
+    <link rel="stylesheet" href="form.css">
+    
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="form-wrapper">
+      	<h2>Edit your map</h2>
+      	<form class="form hidden">
+      	
+      		<p>City or neighborhood:</p><p><input id="location" type="text" placeholder="San Francisco"><button id="submit-location" type="button">Find on map</button><button id="zoom-in" style="margin-left:10px;margin-right:10px" type="button">Zoom in</button><button id="zoom-out" type="button">Zoom out</button><br><br></p>
+      		<p>Color scheme: &nbsp;&nbsp;&nbsp;<select class="style-selector" name="style"><option value="medium">Medium</option><option value="light">Light</option><option value="grayscale">Grayscale</option></select></p>
+      		<p>or <button id="expand-color-scheme" type="button">Create your own color scheme</button></p>
+      		<div class="color-scheme hidden">
+      			<p>Ocean/water: <input type="color" class="ocean-select" value="#a3e1ef"></p>
+      			<p>Highways/Interstates: <input type="color" class="highway-select" value="#c41108"></p>
+      			<p>Major roads: <input type="color" class="major-rd-select" value="#f29681"></p>
+      			<p>Minor roads: <input type="color" class="minor-rd-select" value="#aaaaaa"></p>
+      			<p>Parks/Green spaces: <input type="color" class="park-select" value="#88D18A"></p>
+      		</div>
+      		<p><br>Geojson to overlay on the map:</p><p><textarea name="geojson" id="geojson" cols="36" rows="18" placeholder="Copy geojson here"></textarea><button id="submit-geojson" type="button">Overlay GeoJSON</button></p>
+      	</form>
+      </div>
+
+      <div id="map" class="medium"></div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+    <script src="js/tile.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/form.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
+	<script src="js/jquery.geocomplete.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Helpful global vars
+        $body   = $(document.body);
+        $window = $(window);
+        $html   = $(document.documentElement);
+        // Found in map.js
+        App.Map.load();
+      });
+    </script>
+
+  </body>
+</html>

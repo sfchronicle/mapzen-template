@@ -1,0 +1,38 @@
+.form-wrapper {
+	width: 245px;
+	overflow: scroll;
+	position: fixed;
+	top: 0;
+	left: 0;
+	opacity: .8;
+	background-color: #fff;
+	padding: 10px 20px;
+}
+
+textarea {
+	border-color: #aaa;
+}
+
+#location {
+	font-size: 18px
+}
+#submit-location,
+#submit-geojson {
+	margin-top:10px;
+}
+
+h1, h2, p {
+	font-family: Arial, san-serif;
+}
+
+button {
+	font-size: 12px;
+}
+
+.hidden {
+	display: none;
+}
+
+.color-scheme input {
+	float:right;
+}

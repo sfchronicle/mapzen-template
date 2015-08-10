@@ -34,13 +34,16 @@ App.Map = App.Map || {
   height: 600,
   coordinates: [-122.50, 37.7520],
   rendered: false,
+  scale: (1 << 20) / 2 / Math.PI,
+  scaleOffset: 1, // for mapmaker tool
   currentId: 'locationsCount', // This acts as the default view for the choropleth
 };
 
 App.Map.load = function () {
     $('#map').html(''); // reset the map just in case a url clicks back from next article
-	
+	 
 	var self = this;
+  console.log(self.scale);
 //	var slugify =  App.Utils.slugify;
 //	var templatize = App.Utils.templatize;
 	var layers = ['water', 'landuse', 'roads', 'buildings'];
@@ -49,7 +52,7 @@ App.Map.load = function () {
 
     var projection = d3.geo.mercator()
       .center(self.coordinates)
-      .scale((1 << 20) / 2 / Math.PI)
+      .scale(self.scale * self.scaleOffset)
       .translate([self.width / 2, self.height / 2]);
 
     var path = d3.geo.path()
@@ -86,8 +89,8 @@ App.Map.load = function () {
 	// separate objects based on how they will be styled and 
 	// put different class names in the second argument of this function call.
 	// call as many times as needed
-	renderJson(svg, self.json1, 'overlay1');
-//	renderJson(svg, self.json2, 'overlay2');
+	// renderJson(svg, self.json1, 'overlay1');
+  // renderJson(svg, self.json2, 'overlay2');
 
 /****** // More Zoom Functionality
 	var zoom_controls = svg.append("div")
@@ -136,6 +139,8 @@ function renderTiles (svg) {
   function renderJson (svg, json, className) {
       // render json data on map
 
+      debugger;
+
       svg.append("g")
             .selectAll("path")
             .data(json.features)
@@ -145,6 +150,11 @@ function renderTiles (svg) {
     //  .on('mouseover', tip.show)
     //  .on('mouseout', tip.hide);
   }
+
+  $("#submit-geojson").click(function(){
+    var data = $("#geojson").val();
+    renderJson(svg, JSON.parse(data), 'overlay');
+  });
 /***
   function zoomed() {
 	  var tiles = tiler
