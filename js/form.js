@@ -1,3 +1,7 @@
+$("#export").click(function(){
+	$("body").append('<script src="http://maeganclawges.com/static/svg-crowbar-2.js"></script>');
+});
+
 $(".form-wrapper").click(function(){
 	$(".form").removeClass("hidden");
 });

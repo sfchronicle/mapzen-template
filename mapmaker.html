@@ -17,7 +17,7 @@
       <div class="form-wrapper">
       	<h2>Edit your map</h2>
       	<form class="form hidden">
-      	
+      		<button id="export" type="button">Download SVG</button>
       		<p>City or neighborhood:</p><p><input id="location" type="text" placeholder="San Francisco"><button id="submit-location" type="button">Find on map</button><button id="zoom-in" style="margin-left:10px;margin-right:10px" type="button">Zoom in</button><button id="zoom-out" type="button">Zoom out</button><br><br></p>
       		<p>Color scheme: &nbsp;&nbsp;&nbsp;<select class="style-selector" name="style"><option value="medium">Medium</option><option value="light">Light</option><option value="grayscale">Grayscale</option></select></p>
       		<p>or <button id="expand-color-scheme" type="button">Create your own color scheme</button></p>
@@ -43,8 +43,6 @@
     <script src="js/map.js"></script>
     <script src="js/form.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
-	<script src="js/jquery.geocomplete.min.js"></script>
-
     <script>
       $(document).ready(function () {
         // Helpful global vars

@@ -153,6 +153,7 @@ function renderTiles (svg) {
 
   $("#submit-geojson").click(function(){
     var data = $("#geojson").val();
+    debugger;
     renderJson(svg, JSON.parse(data), 'overlay');
   });
 /***
